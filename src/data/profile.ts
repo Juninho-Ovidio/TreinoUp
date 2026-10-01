@@ -5,13 +5,24 @@ import { today } from "@/lib/dates";
 import { computeTargets } from "@/lib/goals";
 import { check, sb, uid } from "./base";
 
+/** Recria o perfil se a linha não existir (ex.: apagada pelo painel). O plano fica no padrão. */
+async function ensureProfile(id: string) {
+  check(await sb().from("profiles").upsert({ id }, { onConflict: "id", ignoreDuplicates: true }));
+}
+
 export async function getProfile(): Promise<Profile> {
   const id = await uid();
+  const found = check(await sb().from("profiles").select("*").eq("id", id).maybeSingle()) as Profile | null;
+  if (found) return found;
+  await ensureProfile(id);
   return check(await sb().from("profiles").select("*").eq("id", id).single()) as Profile;
 }
 
 export async function updateProfile(patch: Partial<Omit<Profile, "id" | "plan" | "created_at" | "updated_at">>): Promise<Profile> {
   const id = await uid();
+  const updated = check(await sb().from("profiles").update(patch).eq("id", id).select("*").maybeSingle()) as Profile | null;
+  if (updated) return updated;
+  await ensureProfile(id);
   return check(await sb().from("profiles").update(patch).eq("id", id).select("*").single()) as Profile;
 }
 
