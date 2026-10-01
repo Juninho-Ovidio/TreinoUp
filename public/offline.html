@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sem conexão · NutriTrack</title>
+<style>
+  :root{color-scheme:light dark;--bg:#f5f6f4;--fg:#15181a;--muted:#6a7075;--brand:#17a05d}
+  @media (prefers-color-scheme:dark){:root{--bg:#0b0d0c;--fg:#eceeed;--muted:#9aa19d;--brand:#35c77c}}
+  body{margin:0;min-height:100dvh;display:grid;place-items:center;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,sans-serif;padding:24px;box-sizing:border-box;text-align:center}
+  h1{font-size:22px;margin:16px 0 6px}
+  p{color:var(--muted);margin:0 0 20px;max-width:32ch}
+  button{background:var(--brand);color:#fff;border:0;border-radius:999px;padding:12px 22px;font:600 15px system-ui}
+</style>
+</head>
+<body>
+  <main>
+    <img src="/icons/icon.svg" width="56" height="56" alt="">
+    <h1>Você está sem conexão</h1>
+    <p>Assim que a internet voltar, seus registros aparecem aqui de novo.</p>
+    <button onclick="location.reload()">Tentar de novo</button>
+  </main>
+</body>
+</html>
