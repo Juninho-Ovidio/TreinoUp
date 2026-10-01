@@ -10,3 +10,7 @@ next-env.d.ts
 coverage
 supabase/.temp/
 .claude/settings.local.json
+
+.vercel
+.env*
+!.env.example
