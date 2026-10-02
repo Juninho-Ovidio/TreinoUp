@@ -4,7 +4,9 @@ Aplicativo de acompanhamento nutricional e fitness: diário alimentar, macros, �
 
 **Stack:** Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Supabase (PostgreSQL, Auth, Storage, RLS) · Open Food Facts · Vitest.
 
-> **App mobile** (iOS e Android) em [`mobile/`](mobile/README.md): o TreinoUp num app só, somando corrida, pedal e trilha com GPS e rede social. É um projeto Expo com o próprio `package.json`; o build e o deploy do site ignoram essa pasta. Site e app usam **o mesmo projeto Supabase**, com login único. As tabelas novas do app ficam em schemas próprios (ex.: `privacy`), e o perfil ganhou colunas novas (`username`, `bio`, `city`, `profile_visibility`). Testes do banco inteiro: `npm run test:db`.
+> **App mobile** (iOS e Android) em [`mobile/`](mobile/README.md): o TreinoUp num app só, somando corrida, pedal e trilha com GPS e rede social. É um projeto Expo com o próprio `package.json`; o TypeScript e o ESLint do site ignoram essa pasta, e o build do site só a usa para gerar a versão web do Run (abaixo). Site e app usam **o mesmo projeto Supabase**, com login único. As tabelas novas do app ficam em schemas próprios (ex.: `privacy`), e o perfil ganhou colunas novas (`username`, `bio`, `city`, `profile_visibility`). Testes do banco inteiro: `npm run test:db`.
+>
+> **TreinoUp Run no site:** o `npm run build` também gera a versão web do Run em `public/app` (script `scripts/build-mobile-web.mjs`), publicada em **/app**. O ícone do Run no cabeçalho do Início abre `/app/run` usando a mesma sessão (cookies) do site; sem login, o middleware manda para `/login` e volta. No navegador a gravação por GPS só funciona com a aba aberta.
 >
 > **Pontos de restauração:** a tag `restauracao/antes-app-mobile` marca o código antes do app (`git checkout restauracao/antes-app-mobile`), e `supabase/rollback/20261002000001_run_fundacao_down.sql` desfaz no banco a migration do app (rode no SQL Editor; é testado em `supabase/tests/rollback.test.mjs`).
 

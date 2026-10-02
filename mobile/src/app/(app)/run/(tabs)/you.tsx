@@ -1,11 +1,12 @@
 import { StyleSheet, View } from "react-native";
 import { router } from "expo-router";
-import { Activity, MapPin } from "lucide-react-native";
+import { MapPin } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { Avatar, Button, Card, EmptyState, SectionTitle, Skeleton, Text, useTheme } from "@/design-system";
+import { Avatar, Button, Card, SectionTitle, Skeleton, Text, useTheme } from "@/design-system";
 import { profileLabel } from "@/features/profile/domain/profile";
 import { useMyProfile } from "@/features/profile/presentation/useProfile";
 import { TabScreen } from "@/features/navigation/TabScreen";
+import { LocalActivityList } from "@/features/record/presentation/LocalActivityList";
 
 export default function YouScreen() {
   const { t } = useTranslation();
@@ -54,14 +55,7 @@ export default function YouScreen() {
       </Card>
 
       <SectionTitle>{t("you.activitiesTitle")}</SectionTitle>
-      <Card>
-        <EmptyState
-          icon={<Activity size={28} color={colors.brandText} />}
-          badge={t("common.soon")}
-          title={t("you.activitiesTitle")}
-          text={t("you.activitiesEmpty")}
-        />
-      </Card>
+      <LocalActivityList />
     </TabScreen>
   );
 }

@@ -1,5 +1,5 @@
 import { Pressable, RefreshControl, StyleSheet, View } from "react-native";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { BookOpen, ChevronRight, Flame, Settings, Target, UserRound } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -26,12 +26,19 @@ import { profileLabel } from "@/features/profile/domain/profile";
 import { useMyProfile } from "@/features/profile/presentation/useProfile";
 import { greetingKey, percentOf, type DaySummary } from "@/features/today/domain/summary";
 import { useTodaySummary } from "@/features/today/presentation/useToday";
+import { webEmbedded } from "@/lib/webEmbed";
 
 /** Cores dos macros, as mesmas do TreinoUp web. */
 const MACRO_COLORS = { protein: "#3B82F6", carbs: "#E8A33D", fat: "#E0678B", water: "#3AA6E8" } as const;
 
 /** Tela inicial do TreinoUp: resumo do dia (mesmo banco do site) e a porta de entrada do TreinoUp Run. */
 export default function TreinoUpHome() {
+  // Dentro do site, a tela inicial é a do próprio site: o app abre direto no Run.
+  if (webEmbedded) return <Redirect href="/run" />;
+  return <TreinoUpHomeScreen />;
+}
+
+function TreinoUpHomeScreen() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const profile = useMyProfile().data;

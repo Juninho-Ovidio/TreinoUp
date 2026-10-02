@@ -48,6 +48,20 @@ const config: ExpoConfig = {
     "expo-localization",
     "expo-apple-authentication",
     [
+      "expo-location",
+      {
+        locationWhenInUsePermission: "O TreinoUp usa sua localização para gravar o percurso das suas atividades.",
+        locationAlwaysAndWhenInUsePermission:
+          "Permita o tempo todo para continuar gravando sua atividade com a tela bloqueada.",
+        isIosBackgroundLocationEnabled: true,
+        isAndroidBackgroundLocationEnabled: true,
+        isAndroidForegroundServiceEnabled: true,
+      },
+    ],
+    "expo-task-manager",
+    "expo-sqlite",
+    "@maplibre/maplibre-react-native",
+    [
       "expo-image-picker",
       {
         photosPermission: "Usamos suas fotos para você escolher a foto do perfil.",
@@ -64,6 +78,10 @@ const config: ExpoConfig = {
       },
     ],
   ],
+  experiments: {
+    // Publicação dentro do site TreinoUp (ex.: /app). Só afeta a versão web.
+    baseUrl: process.env.EXPO_WEB_BASE_URL || undefined,
+  },
   extra: {
     // Preenchido por `eas init` (vincula o projeto à sua conta Expo).
     eas: process.env.EAS_PROJECT_ID ? { projectId: process.env.EAS_PROJECT_ID } : undefined,

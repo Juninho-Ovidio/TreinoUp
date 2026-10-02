@@ -17,6 +17,8 @@ export default function RunLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="search" />
         <Stack.Screen name="notifications" />
+        <Stack.Screen name="recording" options={{ presentation: "fullScreenModal", gestureEnabled: false, animation: "slide_from_bottom" }} />
+        <Stack.Screen name="summary" options={{ gestureEnabled: false }} />
       </Stack.Protected>
     </Stack>
   );

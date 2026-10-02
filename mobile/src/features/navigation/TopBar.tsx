@@ -3,9 +3,11 @@ import { router } from "expo-router";
 import { Bell, ChevronLeft, Search, Settings } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { chrome, HeaderBar, HeaderButton, LogoMark } from "@/design-system";
+import { goToSiteHome, webEmbedded } from "@/lib/webEmbed";
 
 /** Sai do TreinoUp Run e volta para a tela inicial do TreinoUp. */
 export function backToTreinoUp() {
+  if (webEmbedded) return goToSiteHome();
   if (router.canDismiss()) router.dismissTo("/");
   else router.replace("/");
 }

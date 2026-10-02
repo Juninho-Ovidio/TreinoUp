@@ -18,7 +18,10 @@ import { applyLanguagePreference } from "@/i18n";
 import { envResult } from "@/lib/env";
 import { usePrefs } from "@/lib/prefs";
 import { queryClient } from "@/lib/queryClient";
+import { goToSiteLogin, webEmbedded } from "@/lib/webEmbed";
 import { bindAuthRefreshToAppState } from "@/lib/supabase";
+// Define a tarefa de GPS em segundo plano no carregamento do app (exigência do TaskManager).
+import "@/features/record/services/locationTracking";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -81,6 +84,12 @@ function Gate() {
     if (status !== "loading") SplashScreen.hideAsync().catch(() => {});
   }, [status]);
 
+  // Publicado dentro do site: o login é o do TreinoUp.
+  const toSiteLogin = webEmbedded && status === "signedOut";
+  useEffect(() => {
+    if (toSiteLogin) goToSiteLogin();
+  }, [toSiteLogin]);
+
   // Destino pedido por um link (ex.: redefinir senha), aplicado quando o app estiver liberado.
   useEffect(() => {
     if (pendingNext && status === "ready") {
@@ -88,6 +97,8 @@ function Gate() {
       router.push(pendingNext as never);
     }
   }, [pendingNext, status]);
+
+  if (toSiteLogin) return null;
 
   if (status === "loading") {
     // Só aparece depois do login, enquanto o perfil carrega (na abertura a splash cobre isto).

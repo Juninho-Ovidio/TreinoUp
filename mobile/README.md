@@ -47,7 +47,30 @@ Com Android Studio instalado, também dá para rodar local: `npm run android`.
 | Google | Authentication → Providers → Google (client ID/secret do Google Cloud, tipo "Web") | `EXPO_PUBLIC_AUTH_GOOGLE=true` |
 | Apple | Authentication → Providers → Apple. No iOS o login é nativo: adicione o bundle `com.treinoup.app` em "Client IDs". Fora do iOS usa o fluxo web, que precisa do Services ID e da chave | `EXPO_PUBLIC_AUTH_APPLE=true` |
 
-### 1.4 Comandos
+### 1.4 Gravar uma atividade (Fase 1)
+
+No **celular** (development build), a gravação usa o GPS em segundo plano:
+- Na primeira gravação o app pede a localização. Para gravar com a **tela bloqueada**, escolha "Permitir o tempo todo". No Android aparece a notificação fixa "Gravando atividade". Com permissão só "durante o uso", o app avisa e mantém a tela ligada.
+- Tudo é salvo no **SQLite do aparelho** a cada ponto: funciona sem internet, e se o app fechar, a gravação continua de onde parou ao reabrir.
+- O mapa usa **MapLibre** com os estilos gratuitos do **OpenFreeMap** (troque em `EXPO_PUBLIC_MAP_STYLE_LIGHT/DARK`).
+
+No **navegador** (`npx expo start --web`) dá para testar o fluxo inteiro, mas só com a aba aberta e a tela ligada. As gravações ficam no `localStorage`, e o worker do mapa web é copiado para `public/maplibre/` no `npm install`.
+
+O que entra na gravação:
+- **Filtro de GPS:** descarta pontos com precisão pior que 30 m e saltos impossíveis para o esporte, e suaviza a posição com um filtro de Kalman.
+- **Elevação:** média móvel com histerese de 3 m.
+- **Parciais:** por km, ou por milha se o perfil estiver em milhas.
+- **Pausa automática:**
+  - corrida: acelerômetro + GPS;
+  - bike: velocidade do GPS.
+- **Avisos de voz:** a cada parcial e ao pausar ou retomar.
+- **Tela sempre ligada:** opcional.
+- **Botões:** volta e "segurar para finalizar".
+- **Resumo:** título automático ("Corrida da manhã"), esforço percebido de 1 a 10 e visibilidade.
+
+As atividades ficam **salvas no aparelho** e aparecem em Run → Você como "Aguardando envio". O envio ao servidor é a Fase 2. O id de cada gravação já é o `client_activity_id` que vai evitar duplicatas.
+
+### 1.5 Comandos
 
 | Comando | O que faz |
 | --- | --- |
@@ -79,6 +102,8 @@ mobile/
 │  │        ├─ onboarding.tsx primeira entrada: @usuário, nome e unidades
 │  │        ├─ (tabs)/        as 5 abas do Run, no dock do TreinoUp
 │  │        └─ search, notifications
+│  ├─ features/record/        gravação: domain (máquina de estados, filtros, parciais), engine (motor + fila),
+│  │                          data (SQLite / localStorage), services (GPS, acelerômetro, voz), presentation
 │  ├─ features/<feature>/
 │  │  ├─ domain/              regras puras e testadas (validação, gate, username…)
 │  │  ├─ data/                acesso ao Supabase (cada feature fala com o seu schema)
@@ -120,7 +145,7 @@ O MVP fica no Supabase (Postgres + PostGIS + Edge Functions + `pg_cron`). Quando
 | Fase | Entrega | Status |
 | --- | --- | --- |
 | 0. Fundação | Repositório, CI, design system, 5 abas, login (e-mail, Google, Apple), perfil | ✅ |
-| 1. Gravação | GPS offline-first, tela de gravar, pausa automática, resumo, salvar local | |
+| 1. Gravação | GPS offline-first, tela de gravar, pausa automática, resumo, salvar local | ✅ |
 | 2. Atividades | Upload, detalhe com mapa, gráficos, parciais, histórico, estatísticas | |
 | 3. Social | Seguir, feed, curtidas, comentários, push | |
 | 4. Privacidade | Todos os controles, zonas de privacidade no servidor | |

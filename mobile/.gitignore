@@ -42,3 +42,6 @@ yarn-error.*
 
 # testes
 coverage/
+
+# gerado no postinstall (worker do mapa web)
+public/maplibre/

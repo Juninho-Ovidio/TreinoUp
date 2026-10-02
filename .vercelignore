@@ -1,2 +1,5 @@
-# O app mobile (Expo) não faz parte do deploy web.
-mobile/
+# O Vercel precisa de mobile/ para gerar o TreinoUp Run em /app; as dependências são instaladas no build.
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/public/maplibre/

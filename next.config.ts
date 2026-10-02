@@ -15,6 +15,18 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  // TreinoUp Run publicado em /app (app Expo exportado para public/app no build).
+  // Qualquer rota do app que não seja um arquivo cai no index.html dele (o roteador do app resolve).
+  async rewrites() {
+    return {
+      beforeFiles: [],
+      afterFiles: [],
+      fallback: [
+        { source: "/app", destination: "/app/index.html" },
+        { source: "/app/:path*", destination: "/app/index.html" },
+      ],
+    };
+  },
   async headers() {
     return [
       {

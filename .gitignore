@@ -14,3 +14,6 @@ supabase/.temp/
 .vercel
 .env*
 !.env.example
+
+# TreinoUp Run gerado no build (scripts/build-mobile-web.mjs)
+/public/app/

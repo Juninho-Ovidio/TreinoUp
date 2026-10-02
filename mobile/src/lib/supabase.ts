@@ -1,18 +1,8 @@
 import "react-native-url-polyfill/auto";
 import { AppState, Platform } from "react-native";
-import * as SecureStore from "expo-secure-store";
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { createChunkedStorage, type KeyValueStore } from "./chunkedStorage";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { createSupabase } from "./createSupabase";
 import { envResult } from "./env";
-
-const secureStore: KeyValueStore = {
-  getItem: (key) => SecureStore.getItemAsync(key),
-  setItem: (key, value) => SecureStore.setItemAsync(key, value),
-  removeItem: (key) => SecureStore.deleteItemAsync(key),
-};
-
-// No navegador não existe Keychain: o Supabase usa o localStorage padrão.
-const storage = Platform.OS === "web" ? undefined : createChunkedStorage(secureStore);
 
 let client: SupabaseClient | null = null;
 
@@ -20,16 +10,7 @@ let client: SupabaseClient | null = null;
 export function supabase(): SupabaseClient {
   if (client) return client;
   if (!envResult.ok) throw new Error(`Configuração ausente: ${envResult.missing.join(", ")}`);
-  client = createClient(envResult.env.supabaseUrl, envResult.env.supabaseAnonKey, {
-    auth: {
-      storage,
-      autoRefreshToken: true,
-      persistSession: true,
-      // O retorno dos links de e-mail e do login social é tratado em src/app/auth/callback.tsx.
-      detectSessionInUrl: false,
-      flowType: "pkce",
-    },
-  });
+  client = createSupabase(envResult.env.supabaseUrl, envResult.env.supabaseAnonKey);
   return client;
 }
 

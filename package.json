@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm run build:app && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "import:foods": "node scripts/import-foods-csv.mjs",
     "generate:videos": "node scripts/generate-exercise-videos.mjs",
-    "test:db": "node --test \"supabase/tests/*.test.mjs\""
+    "test:db": "node --test \"supabase/tests/*.test.mjs\"",
+    "build:app": "node scripts/build-mobile-web.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

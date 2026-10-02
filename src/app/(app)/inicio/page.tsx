@@ -6,6 +6,7 @@ import { ChevronRight, Droplet, Dumbbell, Flame, Menu, Plus, Target, UserRound }
 import { useApp } from "@/components/app/AppProvider";
 import { CaloriesCard, MacroBars } from "@/components/app/Nutrition";
 import { MealIcon } from "@/components/app/MealIcon";
+import { RunMark } from "@/components/app/RunMark";
 import { Sparkline } from "@/components/charts/LineChart";
 import { Card, SectionTitle, Skeleton } from "@/components/ui/Card";
 import { HeaderBar, headerOutlineBtn } from "@/components/ui/HeaderBar";
@@ -76,6 +77,15 @@ export default function HomePage() {
           </h1>
           <p className="truncate text-[13px] text-white/75">Pronto para o treino?</p>
         </div>
+        {/* TreinoUp Run: o app de corrida, publicado em /app (fora do Next, por isso <a> e não <Link>). */}
+        <a
+          href="/app/run"
+          aria-label="Abrir o TreinoUp Run"
+          title="TreinoUp Run"
+          className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl ring-[1.5px] ring-[#ffd27a]/70 transition-transform hover:ring-[#ffd27a] active:scale-95"
+        >
+          <RunMark size={40} />
+        </a>
         <Link href="/perfil" className={headerOutlineBtn} aria-label="Menu e perfil">
           <Menu className="h-5 w-5" aria-hidden />
         </Link>

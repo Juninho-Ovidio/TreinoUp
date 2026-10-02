@@ -30,7 +30,13 @@ export function LoginForm() {
       return setErrors({ form: authMessage(error.message) });
     }
     const next = params.get("next");
-    router.replace(next && next.startsWith("/") && !next.startsWith("//") ? next : "/inicio");
+    const target = next && next.startsWith("/") && !next.startsWith("//") ? next : "/inicio";
+    // O TreinoUp Run (/app) não é uma página do Next: abre com navegação completa.
+    if (target === "/app" || target.startsWith("/app/")) {
+      window.location.assign(target);
+      return;
+    }
+    router.replace(target);
     router.refresh();
   }
 
