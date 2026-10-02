@@ -18,6 +18,7 @@ export const keys = {
   latestWeight: "weight:latest",
   weights: "weights:",
   measurements: "measurements",
+  assessments: "assessments",
   charts: "charts:",
   recipes: "recipes",
   workouts: "workouts",

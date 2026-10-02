@@ -1,6 +1,6 @@
 "use client";
 
-import type { BodyMeasurement, MeasurementField, WeightEntry } from "@/lib/types";
+import type { BodyAssessment, BodyMeasurement, MeasurementField, WeightEntry } from "@/lib/types";
 import { check, sb, uid } from "./base";
 
 // ---------- Peso ----------
@@ -50,4 +50,28 @@ export async function saveMeasurement(entry_date: string, values: Partial<Record
 
 export async function deleteMeasurement(id: string) {
   check(await sb().from("body_measurements").delete().eq("id", id));
+}
+
+// ---------- Avaliação física ----------
+
+export type AssessmentValues = Omit<BodyAssessment, "id" | "user_id" | "created_at">;
+
+export async function listAssessments(): Promise<BodyAssessment[]> {
+  const me = await uid();
+  return check(await sb().from("body_assessments").select("*").eq("user_id", me).order("assessed_on", { ascending: false })) as BodyAssessment[];
+}
+
+/** Uma avaliação por dia: salvar de novo na mesma data substitui a anterior. */
+export async function saveAssessment(values: AssessmentValues): Promise<BodyAssessment> {
+  const me = await uid();
+  const row = check(
+    await sb().from("body_assessments").upsert({ user_id: me, ...values }, { onConflict: "user_id,assessed_on" }).select("*").single(),
+  ) as BodyAssessment;
+  // O peso da avaliação também entra no histórico de peso.
+  await saveWeight(values.assessed_on, values.weight_kg);
+  return row;
+}
+
+export async function deleteAssessment(id: string) {
+  check(await sb().from("body_assessments").delete().eq("id", id));
 }

@@ -44,7 +44,7 @@ function AddSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
     { label: "Água", icon: Droplet, color: "var(--water)", go: () => openSheet("water") },
     { label: "Peso", icon: Scale, color: "var(--protein)", go: () => openSheet("weight") },
     { label: "Treino", icon: Dumbbell, color: "var(--fat)", go: () => router.push("/treinos/novo") },
-    { label: "Medidas", icon: Ruler, color: "var(--muted)", go: () => router.push("/progresso/medidas") },
+    { label: "Avaliação", icon: Ruler, color: "var(--muted)", go: () => router.push("/progresso/avaliacao/nova") },
     { label: "Exercício", icon: Flame, color: "var(--warn)", go: () => openSheet("activity") },
   ];
   return (

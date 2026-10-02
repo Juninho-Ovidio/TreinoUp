@@ -82,8 +82,8 @@ export default function ProgressPage() {
       <PageHeader
         title="Meu progresso"
         action={
-          <Link href="/progresso/medidas" className="flex h-10 items-center gap-1.5 rounded-full bg-surface px-3.5 text-sm font-semibold shadow-card">
-            <Ruler className="h-4 w-4" /> Medidas
+          <Link href="/progresso/avaliacao" className="flex h-10 items-center gap-1.5 rounded-full bg-surface px-3.5 text-sm font-semibold shadow-card">
+            <Ruler className="h-4 w-4" /> Avaliação
           </Link>
         }
       />
@@ -223,8 +223,8 @@ export default function ProgressPage() {
         <Link href="/treinos" className="flex items-center gap-3 rounded-[var(--radius-card)] bg-surface p-4 font-semibold shadow-card">
           <Dumbbell className="h-5 w-5 text-fat" /> Treinos
         </Link>
-        <Link href="/progresso/medidas" className="flex items-center gap-3 rounded-[var(--radius-card)] bg-surface p-4 font-semibold shadow-card">
-          <Ruler className="h-5 w-5 text-protein" /> Medidas
+        <Link href="/progresso/avaliacao" className="flex items-center gap-3 rounded-[var(--radius-card)] bg-surface p-4 font-semibold shadow-card">
+          <Ruler className="h-5 w-5 text-protein" /> Avaliação física
         </Link>
       </div>
     </main>

@@ -178,7 +178,7 @@ export default function ProfilePage() {
           <Row href="/alimentos/meus" icon={Wheat} label="Meus alimentos" />
           <Row href="/receitas" icon={ChefHat} label="Receitas" />
           <Row href="/treinos" icon={Dumbbell} label="Treinos" />
-          <Row href="/progresso/medidas" icon={Ruler} label="Medidas" />
+          <Row href="/progresso/avaliacao" icon={Ruler} label="Avaliação" />
           <Row href="/assistente" icon={Sparkles} label="Assistente Nutri" value={can("assistant") ? undefined : "Premium"} />
         </Card>
       </section>

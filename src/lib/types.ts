@@ -1,3 +1,5 @@
+import type { AnamnesisKey, PerimeterKey, SkinfoldKey } from "./assessment";
+
 // Tipos das linhas do banco (espelham supabase/migrations). Números "numeric" chegam como number.
 
 export type Sex = "male" | "female";
@@ -209,4 +211,18 @@ export interface Macros {
   carbs: number;
   fat: number;
   fiber: number;
+}
+
+export interface BodyAssessment {
+  id: string;
+  user_id: string;
+  assessed_on: string;
+  sex: Sex;
+  age: number;
+  weight_kg: number;
+  height_cm: number;
+  skinfolds_mm: Partial<Record<SkinfoldKey, number>>;
+  perimeters_cm: Partial<Record<PerimeterKey, number>>;
+  anamnesis: Partial<Record<AnamnesisKey, string>>;
+  created_at: string;
 }
