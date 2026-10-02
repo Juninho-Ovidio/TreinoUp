@@ -4,6 +4,10 @@ Aplicativo de acompanhamento nutricional e fitness: diário alimentar, macros, �
 
 **Stack:** Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Supabase (PostgreSQL, Auth, Storage, RLS) · Open Food Facts · Vitest.
 
+> **App mobile** (iOS e Android) em [`mobile/`](mobile/README.md): o TreinoUp num app só, somando corrida, pedal e trilha com GPS e rede social. É um projeto Expo com o próprio `package.json`; o build e o deploy do site ignoram essa pasta. Site e app usam **o mesmo projeto Supabase**, com login único. As tabelas novas do app ficam em schemas próprios (ex.: `privacy`), e o perfil ganhou colunas novas (`username`, `bio`, `city`, `profile_visibility`). Testes do banco inteiro: `npm run test:db`.
+>
+> **Pontos de restauração:** a tag `restauracao/antes-app-mobile` marca o código antes do app (`git checkout restauracao/antes-app-mobile`), e `supabase/rollback/20261002000001_run_fundacao_down.sql` desfaz no banco a migration do app (rode no SQL Editor; é testado em `supabase/tests/rollback.test.mjs`).
+
 ---
 
 ## 1. Rodar no seu computador
@@ -40,6 +44,7 @@ Abra `http://localhost:3000`. Para testar no celular na mesma rede, use o IP do 
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` e `npm start` | Build e servidor de produção (o service worker/PWA só é registrado em produção) |
 | `npm test` | Testes dos cálculos (macros, metas, receitas, exercício, datas) |
+| `npm run test:db` | Aplica todas as migrations num Postgres em WASM (PGlite) e testa RLS, triggers e regras |
 | `npm run typecheck` | Checagem de tipos |
 | `npm run lint` | ESLint |
 | `npm run import:foods arquivo.csv -- --source taco` | Importa uma base oficial de alimentos (seção 3) |

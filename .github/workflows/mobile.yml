@@ -1,0 +1,63 @@
+name: App mobile e banco
+
+on:
+  push:
+    branches: [main]
+    paths: ["mobile/**", "supabase/**", ".github/workflows/mobile.yml"]
+  pull_request:
+    paths: ["mobile/**", "supabase/**", ".github/workflows/mobile.yml"]
+
+concurrency:
+  group: mobile-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mobile:
+    defaults:
+      run:
+        working-directory: mobile
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Tipos
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Testes do app (com cobertura mínima de 70% no domínio)
+        run: npm run test:coverage -- --ci
+
+      - name: Dependências compatíveis com o SDK do Expo
+        run: npx expo install --check
+
+      - name: Build web (garante que o bundle compila)
+        run: npx expo export --platform web --output-dir dist
+        env:
+          EXPO_PUBLIC_SUPABASE_URL: https://ci.supabase.co
+          EXPO_PUBLIC_SUPABASE_ANON_KEY: ci-public-key
+
+  # Banco único (TreinoUp + Run): todas as migrations num Postgres em WASM, com testes de RLS.
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Migrations + RLS
+        run: npm run test:db

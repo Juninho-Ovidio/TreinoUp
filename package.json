@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "import:foods": "node scripts/import-foods-csv.mjs",
-    "generate:videos": "node scripts/generate-exercise-videos.mjs"
+    "generate:videos": "node scripts/generate-exercise-videos.mjs",
+    "test:db": "node --test \"supabase/tests/*.test.mjs\""
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
@@ -27,6 +28,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@eslint/eslintrc": "^3.2.0",
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^22.10.0",
